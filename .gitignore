@@ -1,0 +1,4 @@
+.user.ini
+.htaccess
+composer.lock
+vendor/
