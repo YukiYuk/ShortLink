@@ -48,22 +48,25 @@ class ApiController
             )));
         }
 
-        try {
-            $link = new Link;
-            $link->token = Random::str(Config::get('token_length'));
-            $link->target = $post['target'];
-            $link->create_time = time();
-            $link->creator_ip = REAL_IP;
-            $link->creator_ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null;
-            $link->save();
-        } catch (\Exception $e) {
-            if ($errcode) header('HTTP/1.1 500');
-            header('Content-Type: application/json');
-            die(json_encode(array(
-                'ok' => false,
-                'msg' => 'internal error, please try again.',
-                'data' => null
-            )));
+        $link = Link::where('target', $post['target'])->first();
+        if ($link == null) {
+            try {
+                $link = new Link;
+                $link->token = Random::str(Config::get('token_length'));
+                $link->target = $post['target'];
+                $link->create_time = time();
+                $link->creator_ip = REAL_IP;
+                $link->creator_ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null;
+                $link->save();
+            } catch (\Exception $e) {
+                if ($errcode) header('HTTP/1.1 500');
+                header('Content-Type: application/json');
+                die(json_encode(array(
+                    'ok' => false,
+                    'msg' => 'internal error, please try again.',
+                    'data' => null
+                )));
+            }
         }
 
         header('Content-Type: application/json');
