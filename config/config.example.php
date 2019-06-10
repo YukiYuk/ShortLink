@@ -2,7 +2,8 @@
 
 // copy this file to config.php
 
-$SystemConfig['base_url'] = 'https://c.cc';
+$SystemConfig['base_url'] = 'https://example.com';
+$SystemConfig['host'] = 'example.com';
 
 $SystemConfig['debug'] = true;
 
